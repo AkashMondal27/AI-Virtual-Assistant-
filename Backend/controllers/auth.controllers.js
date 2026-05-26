@@ -1,16 +1,15 @@
 import User from "./../models/user.model.js"
-import bcrypt from "bcryptjs"
-import genToken from "../utils/genToken.js"
+import genToken from "../config/token.js";
 
 
 //..................Controller for user sign up..................
 
-const signUp = async (req, res) => {
+export const signUp = async (req, res) => {
     try {
         const { name, email, password } = req.body
 
         //   check if user already exists
-        const exisEmail = await User.findOne({ email })
+        const exitEmail = await User.findOne({ email })
         if (exitEmail) {
             return res.status(400).json({ message: "Email already exists" })
         }
@@ -25,7 +24,7 @@ const signUp = async (req, res) => {
 
         // create a new user
 
-        const User = await User.create({
+        const user = await User.create({
             name,
             email,
             password: hashedPassword
@@ -39,7 +38,7 @@ const signUp = async (req, res) => {
             httpOnly: true,
             maxAge: 7 * 24 * 60 * 60 * 1000,
             sameSite: "strict",
-            secure: flase
+            secure: false
         })
 
         return res.status(201).json(user)
@@ -52,7 +51,7 @@ const signUp = async (req, res) => {
 
 //..................Controller for user login..................
 
-const Login = async (req, res) => {
+export const Login = async (req, res) => {
     try {
         const { email, password } = req.body
 
@@ -81,7 +80,7 @@ const Login = async (req, res) => {
             httpOnly: true,
             maxAge: 7 * 24 * 60 * 60 * 1000,
             sameSite: "strict",
-            secure: flase
+            secure: false
         })
 
         return res.status(200).json(user)
