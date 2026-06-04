@@ -1,5 +1,6 @@
 import React, { Children, createContext } from 'react'
-
+import { useState , useEffect} from 'react';
+import axios from 'axios';
 
 export const userDataContext = createContext();
 
@@ -8,6 +9,22 @@ const UserContext = ({ children }) => {
 
 
     const serverUrl="http://localhost:8000/"
+
+    const [userData,setUserData]=useState(null);
+    const handleCurrentUser=async()=>{
+        try{
+            const result =await axios.get(`${serverUrl}/api/user/curent`,{withCredentials:true})
+            setUserData(result.data);
+            console.log(result.data);
+        }catch(error){
+            console.error('Error fetching user data:', error);
+        }
+    }
+
+    useEffect(()=>{
+        handleCurrentUser();
+    },[])
+
     const value={
        serverUrl
     }
