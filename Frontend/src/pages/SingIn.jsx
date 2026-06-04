@@ -14,7 +14,7 @@ function SingIn  (){
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const { serverUrl } = useContext(userDataContext)
+  const { serverUrl,userData,setUserData } = useContext(userDataContext)
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -27,10 +27,12 @@ function SingIn  (){
       let result = await axios.post(`${serverUrl}api/auth/signin`, {
         email, password
       }, { withCredentials: true })
-      console.log(result)
+      // console.log(result)
+      setUserData(result.data);
       setLoading(false);
     } catch (error) {
       console.log(error)
+      setUserData(null)
       setLoading(false);
       setError(error.response.data.message )
     }

@@ -8,12 +8,13 @@ export const userDataContext = createContext();
 const UserContext = ({ children }) => {
 
 
-    const serverUrl="http://localhost:8000/"
+    const serverUrl="http://localhost:8000"
 
     const [userData,setUserData]=useState(null);
+
     const handleCurrentUser=async()=>{
         try{
-            const result =await axios.get(`${serverUrl}/api/user/curent`,{withCredentials:true})
+            const result =await axios.get(`${serverUrl}/api/user/current`,{withCredentials:true})
             setUserData(result.data);
             console.log(result.data);
         }catch(error){
@@ -26,7 +27,7 @@ const UserContext = ({ children }) => {
     },[])
 
     const value={
-       serverUrl
+       serverUrl,userData,setUserData
     }
     return (
         <div>
