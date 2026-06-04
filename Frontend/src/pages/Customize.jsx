@@ -49,7 +49,7 @@ function  Customize  ()  {
                 <Card image={image6}/>
                 <Card image={image7}/>
             {/* adding a div for add option of image  */}
-               <div    className="
+               <div    className={`
                               w-20 h-30
                               sm:w-28 sm:h-48
                               md:w-30 md:h-55
@@ -63,8 +63,10 @@ function  Customize  ()  {
                               cursor-pointer
                               transition-all
                               duration-300
-                             flex justify-center items-center"
-                    onClick={() => inputImage.current.click()} >
+                             flex justify-center items-center 
+                              ${selectedImage == "input" ? "border-2 border-white shadow-2xl shadow-blue-900" : null}`}
+                              onClick={() => {inputImage.current.click() ;
+                                    setSelectedImage("input")}} >
 
                         {!frontendImage && <RiImageAddLine  className='text-white w-8 h-8'/>}
                         {frontendImage && <img src={frontendImage} alt="Selected"  className='h-full object-cover'/>}
@@ -74,12 +76,14 @@ function  Customize  ()  {
                    onChange={handleImage} />
                
         </div> 
-            {/* button for next  */}
-        <button className=' group min-w-30 h-10  mt-5 bg-orange-100 rounded-full text-amber-800 text-xl cursor-pointer 
+        {/* button for next  */}
+            {selectedImage && 
+             <button className=' group min-w-30 h-10  mt-5 bg-orange-100 rounded-full text-amber-800 text-xl cursor-pointer 
                                      hover:bg-orange-300 shadow-2xl shadow-amber-100  flex  gap-1.5 justify-center items-center' >
                     Next <FaArrowRightLong className="text-amber-800 transition-transform duration-300 group-hover:translate-x-1 " />
 
-                </button>
+           </button> }
+       
 
      
     </div>
