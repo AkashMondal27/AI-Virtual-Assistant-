@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import Card from '../components/Card'
 import image1 from "../assets/image1.png"
 import image2 from "../assets/image2.jpg"
@@ -8,17 +8,33 @@ import image5 from "../assets/image5.png"
 import image6 from "../assets/image6.jpeg"
 import image7 from "../assets/image7.jpeg"
 import { RiImageAddLine } from "react-icons/ri";
+import { FaArrowRightLong } from "react-icons/fa6";
+import { useState } from 'react';
+
 
 
 function  Customize  ()  {
-  return (
-    <div className='w-full h-screen bg-linear-to-t from-[black] to-[#010b38] flex 
-                   justify-center items-center py-8 flex-col ' >
 
-        <h1 className='text-blue-400 text-[30px] font-semibold mb-7.5'>
-              Select your <span className='text-orange-300'>Assistant Avatar</span>
+    //input of the Image 
+    const[frontendImage,setFrontendImage]=useState(null);
+    const[backendImage,setBackendImage]=useState(null);
+    const inputImage=useRef()
+
+    //function to handle the image when the user select it
+     const handleImage=(e)=>{
+         const file=e.target.files[0]; //get the file from the input
+         setBackendImage(file);  //we will send this file to the backend to save it in the database and use it later for the avatar of the assistant
+         setFrontendImage(URL.createObjectURL(file)); //converting the file to a url to show it in the frontend
+    }
+  return (
+    <div className='w-full min-h-screen bg-linear-to-t from-[black] to-[#010b38] flex 
+                   justify-center items-center md:py-3 p-0 flex-col ' >
+
+        <h1 className=' text-center text-blue-400 text-[30px] font-semibold mb-5  '>
+              Select your  <br className="block sm:hidden" />
+              <span className='text-orange-300 '>Assistant Avatar</span>
         </h1>
-        <div className='w-full max-w-225 flex justify-center items-center flex-wrap gap-5 sm:gap-8 md:gap-10'>
+        <div className='md:w-[70%] md:max-w-225 flex justify-center items-center flex-wrap gap-5 sm:gap-8 md:gap-10'>
                 <Card image={image1}/>
                 <Card image={image2}/>
                 <Card image={image3}/>
@@ -41,10 +57,24 @@ function  Customize  ()  {
                               cursor-pointer
                               transition-all
                               duration-300
-                             flex justify-center items-center">
-                     <RiImageAddLine  className='text-white w-8 h-8'/>
+                             flex justify-center items-center"
+                    onClick={() => inputImage.current.click()} >
+
+                        {!frontendImage && <RiImageAddLine  className='text-white w-8 h-8'/>}
+                        {frontendImage && <img src={frontendImage} alt="Selected"  className='h-full object-cover'/>}
                 </div>
-        </div>
+
+                <input type="file" accept="image/*" ref={inputImage} hidden 
+                   onChange={handleImage} />
+               
+        </div> 
+            {/* button for next  */}
+        <button className=' group min-w-30 h-10  mt-5 bg-orange-200 rounded-full text-amber-800 text-xl cursor-pointer 
+                                     hover:bg-orange-300 shadow-2xl shadow-amber-100  flex  gap-1.5 justify-center items-center' >
+                    Next <FaArrowRightLong className="text-amber-800 transition-transform duration-300 group-hover:translate-x-1 " />
+
+                </button>
+
      
     </div>
   )
