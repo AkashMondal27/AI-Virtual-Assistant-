@@ -12,6 +12,7 @@ import { FaArrowRightLong } from "react-icons/fa6";
 import { useState } from 'react';
 import { useContext } from 'react';
 import { userDataContext } from '../context/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -23,7 +24,8 @@ function  Customize  ()  {
        frontendImage,setFrontendImage,
        backendImage,setBackendImage,
        selectedImage,setSelectedImage}=useContext(userDataContext);
-   
+     
+    const navigate=useNavigate();
     const inputImage=useRef()
 
     //function to handle the image when the user select it
@@ -79,7 +81,8 @@ function  Customize  ()  {
         {/* button for next  */}
             {selectedImage && 
              <button className=' group min-w-30 h-10  mt-5 bg-orange-100 rounded-full text-amber-800 text-xl cursor-pointer 
-                                     hover:bg-orange-300 shadow-2xl shadow-amber-100  flex  gap-1.5 justify-center items-center' >
+                                     hover:bg-orange-300 shadow-2xl shadow-amber-100  flex  gap-1.5 justify-center items-center' 
+                     onClick={()=>navigate('/customize2')}                >
                     Next <FaArrowRightLong className="text-amber-800 transition-transform duration-300 group-hover:translate-x-1 " />
 
            </button> }
