@@ -17,6 +17,7 @@ const Customize2 = () => {
     const navigate=useNavigate();
 
     const handleUpdateAssistant= async()=>{
+      setLoading(true);
       try{
         let formData=new FormData();  //we will use formData to send the image file to the backend
         formData.append("assistantName",assistantName);
@@ -26,11 +27,13 @@ const Customize2 = () => {
           formData.append("imageUrl",selectedImage); //if the user select one of the preloaded images we will send the url of the image to the backend to save it in the database
         }
          const result = await axios.post(`${serverUrl}/api/user/update`, formData, { withCredentials: true });
+         setLoading(false)
 
          console.log(result.data);
          setUserData(result.data); //update the user data in the context with the new assistant name and image
-
+         navigate("/");
       }catch(error){
+        setLoading(false)
         console.log(error);
       }
     }

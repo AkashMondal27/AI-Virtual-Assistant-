@@ -24,7 +24,7 @@ function SingIn  (){
     setError("")
     setLoading(true);
     try {
-      let result = await axios.post(`${serverUrl}api/auth/signin`, {
+      let result = await axios.post(`${serverUrl}/api/auth/signin`, {
         email, password
       }, { withCredentials: true })
       // console.log(result)
@@ -52,7 +52,8 @@ function SingIn  (){
         shadow-blue-900 flex flex-col items-center justify-center gap-5 px-5'
         onSubmit={handleSignIn}>
         <h1 className='text-blue-400 text-[30px] font-semibold mb-7.5'>
-          Sign In to <span className=' text-orange-400'>Virtual Assistant </span>
+          Sign In to <br className="block sm:hidden" />
+          <span className=' text-orange-400'>Virtual Assistant </span>
         </h1>
 
 
@@ -82,8 +83,31 @@ function SingIn  (){
         {error.length > 0 && <p className="text-red-500  text-[16px] ">
           *{error}
           </p>}
-        <button className='min-w-37 h-13 mt-2 bg-orange-200 rounded-full text-amber-800 text-xl font-semibold
-         hover:bg-orange-300 shadow-2xl shadow-amber-100' disabled={loading}>
+
+        <button className="
+            group
+            w-[90%]
+            max-w-25
+            h-11
+            sm:h-13
+            mt-7
+            rounded-full
+            bg-linear-to-r from-blue-700 to-blue-1000
+           text-white
+       
+            text-lg
+            border-2 border-blue-900
+            cursor-pointer
+            shadow-lg shadow-cyan-500/30
+            hover:shadow-cyan-500/50
+            hover:scale-105
+            transition-all duration-100
+            flex
+            gap-2
+            justify-center
+            items-center
+            mx-auto"
+         disabled={loading}>
           {loading ? "Loading..." : "Sign In"}  
         </button>
 
