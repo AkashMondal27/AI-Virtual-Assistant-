@@ -5,7 +5,9 @@ import uploadOnCloudinary from "../config/cloudinary.js";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-
+import geminiResponse from "../gemeni.js";
+import { response } from "express";
+import moment from "moment";
 
 export const getCurrentUser = async (req, res) => {
     try {
@@ -41,5 +43,150 @@ export const updateAssistant =async(req, res)=>{
         return res.status(200).json(user)
     }catch(error){
        return res.status(400).json({ message: "update assistant error" })
+    }
+}
+
+
+//Make a Controlar for the Ask to Assistant 
+export const askToAssistant =async (req,res)=>{
+    try {
+        const{command}=req.body
+       const user=await User.findById(req.userId); // TAKE USER ID FROM BACKEND DATABASE
+       const userName=user.name
+       const assistantName=user.assistantName
+       const result= await geminiResponse(command,assistantName,userName)
+        
+
+       const jsonMatch = result.match(/\{[\s\S]*\}/);
+       if(!jsonMatch){
+        return res.status(400).json({response:"sorry i can not understand"})
+       }
+    
+       const gemResult= JSON.parse(jsonMatch[0])
+       const type= gemResult.type
+
+       
+       // retun the ans from  this code not from gemini for this type of Querry
+     switch(type){
+
+    // DATE & TIME
+    case "get_date":
+        return res.json({
+            type,
+            userInput: gemResult.cleanInput,
+            response: `Today's date is ${moment().format("DD/MM/YYYY")}`
+        });
+
+    case "get_time":
+        return res.json({
+            type,
+            userInput: gemResult.cleanInput,
+            response: `Current time is ${moment().format("hh:mm A")}`
+        });
+
+    case "get_day":
+        return res.json({
+            type,
+            userInput: gemResult.cleanInput,
+            response: `Today is ${moment().format("dddd")}`
+        });
+
+    case "get_month":
+        return res.json({
+            type,
+            userInput: gemResult.cleanInput,
+            response: `Current month is ${moment().format("MMMM")}`
+        });
+
+
+
+    // WEB & MEDIA
+    case "google_search":
+    case "youtube_search":
+    case "youtube_play":
+    case "spotify_play":
+
+    // SOCIAL MEDIA
+    case "instagram_open":
+    case "facebook_open":
+    case "twitter_open":
+    case "linkedin_open":
+
+    // AI TOOLS
+    case "chatgpt_open":
+    case "gemini_open":
+    case "claude_open":
+
+    // SYSTEM APPS
+    case "calculator_open":
+    case "browser_open":
+    case "camera_open":
+    case "gallery_open":
+    case "settings_open":
+    case "file_manager_open":
+
+    // GOOGLE SERVICES
+    case "maps_open":
+    case "gmail_open":
+    case "google_drive_open":
+
+    // WEATHER
+    case "weather_show":
+
+    // SYSTEM CONTROL
+    case "volume_up":
+    case "volume_down":
+    case "volume_mute":
+    case "brightness_up":
+    case "brightness_down":
+    case "system_sleep":
+    case "system_shutdown":
+    case "system_restart":
+
+    // PRODUCTIVITY
+    case "set_alarm":
+    case "set_timer":
+    case "add_reminder":
+    case "create_note":
+
+    // COMMUNICATION
+    case "send_email":
+    case "send_message":
+    case "make_call":
+
+    // CONVERSATION
+    case "general_short":
+    case "general_detailed":
+    case "greeting":
+    case "farewell":
+    case "gratitude":
+
+        return res.json({
+            type,
+            userInput: gemResult.cleanInput,
+            response: gemResult.response
+        });
+
+
+    default:
+        return res.status(400).json({
+            type: "unknown",
+            response: "I do not understand your request."
+        });
+}
+
+
+
+
+
+
+
+
+
+
+      
+    }
+    catch (error) {
+         return res.status(500).json({response :"ask assistant error !"})
     }
 }
