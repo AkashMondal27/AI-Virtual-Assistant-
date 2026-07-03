@@ -12,7 +12,8 @@ import { IoArrowBackSharp } from "react-icons/io5";
 const Customize2 = () => {
    
     const{userData, backendImage, selectedImage,serverUrl ,setUserData}=useContext(userDataContext);
-    const [assistantName ,setAssistantName]=useState(userData?.AssistantName ||"" );
+    const [assistantName ,setAssistantName]=useState(userData?.assistantName ||"" );
+    const [assistantGender ,setAssistantGender]=useState(userData?.assistantGender ||"" );
     const [loading, setLoading]=useState(false);
     const navigate=useNavigate();
 
@@ -20,6 +21,7 @@ const Customize2 = () => {
       setLoading(true);
       try{
         let formData=new FormData();  //we will use formData to send the image file to the backend
+        formData.append("assistantGender",assistantGender)
         formData.append("assistantName",assistantName);
         if(backendImage){
           formData.append("assistantImage",backendImage);
@@ -30,7 +32,7 @@ const Customize2 = () => {
          setLoading(false)
 
          console.log(result.data);
-         setUserData(result.data); //update the user data in the context with the new assistant name and image
+         setUserData(result.data); //update the user data in the context with the new assistant gender , name and image
          navigate("/");
       }catch(error){
         setLoading(false)
@@ -41,7 +43,7 @@ const Customize2 = () => {
 
     return (
         <div className='w-full min-h-screen bg-linear-to-t from-[black] to-[#010b38] flex 
-                   justify-center items-center md:py-3 p-0 flex-col  ' >
+                   justify-center items-center md:py-2 p-0 flex-col  ' >
             
             <button className="absolute md:top-8 left-8
                                top-18
@@ -60,10 +62,14 @@ const Customize2 = () => {
                     onClick={()=>navigate("/customize")}>
                 <IoArrowBackSharp  />       
             </button>
-            
-            <h1 className=' text-center text-blue-400 text-[30px] font-bold  mb-5  '>
-                Enter Your <br className="block sm:hidden" />
-                <span className='text-orange-300'>Assistant Name</span>
+
+
+           {/*.................Select Name...................................................*/}
+
+           <h1 className=' text-center text-blue-400 text-[30px] font-bold  mb-5  '>
+                Set Your <br className="block sm:hidden" />
+                <span className='text-orange-300'>Assistant Name 
+                  <br className="block sm:hidden" /> & Gender </span>
             </h1>
 
             <input
@@ -71,10 +77,10 @@ const Customize2 = () => {
                 placeholder="Example :  Jarvis"
                 className="
                            w-[90%]
-                           max-w-150
+                           max-w-100
                            h-12
-                           sm:h-14
-                           md:h-15
+                           sm:h-12
+                           md:h-13
                            mt-2
                            outline-none
                            border-2 border-blue-900
@@ -86,7 +92,76 @@ const Customize2 = () => {
                            text-base sm:text-lg"
                  required onChange={(e)=>setAssistantName(e.target.value)} 
                  value={assistantName} />
-         {assistantName &&
+            {/*.............................Select Gender.....................................*/}
+
+
+
+{/* <h1 className="text-center text-blue-400 text-[30px] font-bold mb-5 mt-5" >
+  Select <br className="block sm:hidden" />
+  <span className="text-orange-300">Assistant Gender</span>
+</h1> */}
+
+<div className="flex gap-6 mt-8">
+
+  {/* Male */}
+  <label
+    className={`cursor-pointer flex items-center justify-center gap-1
+      w-30 h-11 rounded-xl border-2 transition-all duration-300
+      ${
+        assistantGender === "male"
+          ? "border-blue-500 bg-blue-900/30 shadow-lg shadow-blue-500/30 scale-105"
+          : "border-blue-900 hover:border-blue-500 hover:bg-blue-900/20"
+      }`}
+  >
+    <input
+      type="radio"
+      name="gender"
+      value="male"
+      checked={assistantGender === "male"}
+      onChange={(e) => setAssistantGender(e.target.value)}
+      className="hidden"
+    />
+
+    <span className="text-2xl">👨</span>
+    <span className="text-white font-semibold text-lg">Male</span>
+  </label>
+
+  {/* Female */}
+  <label
+    className={`cursor-pointer flex items-center justify-center gap-1
+      w-30 h-11 rounded-xl border-2 transition-all duration-300
+      ${
+        assistantGender === "female"
+          ? "border-pink-500 bg-pink-900/30 shadow-lg shadow-pink-500/30 scale-105"
+          : "border-blue-900 hover:border-pink-500 hover:bg-pink-900/20"
+      }`}
+  >
+    <input
+      type="radio"
+      name="gender"
+      value="female"
+      checked={assistantGender === "female"}
+      onChange={(e) => setAssistantGender(e.target.value)}
+      className="hidden"
+    />
+
+    <span className="text-2xl">👩</span>
+    <span className="text-white font-semibold text-lg">Female</span>
+  </label>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+         {assistantName && assistantGender &&
           <button
             className="
             group

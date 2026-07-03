@@ -33,6 +33,7 @@ function Home() {
     }
   }
 
+  //Start funcation 
   const startRecognition=()=>{
     try {
       recognitionRef.current?.start();
@@ -47,7 +48,13 @@ function Home() {
   //make a funcation to speak the  assistant 
   const speak = (text) => {
     const utterence = new SpeechSynthesisUtterance(text);  // this class make the text to speech level
-
+        
+    //   utterence.lang='hi-IN';
+    // const voices=window.speechSynthesis.getVoices()
+    //   const hindiVoice=voices.find(v=>v.lang==="hi-IN")
+    //   if(hindiVoice){
+    //     utterence.voice=hindiVoice;
+    //   } 
     isSpeakingRef.current=true;
     utterence.onend=()=>{
       isSpeakingRef.current=false;
@@ -179,12 +186,12 @@ function Home() {
       console.log(e)
       const transcript = e.results[e.results.length - 1][0].transcript.trim();
       console.log("user question  : " + transcript)
-
+      console.log("Assistant Name:", userData?.assistantName);
 
       //if we take the Assistant name to comment , then it will send to Gemini to take ans 
-      if (transcript.toLowerCase().includes(userData.assistantName.toLowerCase())) {
+      if ( userData && transcript.toLowerCase().includes(userData.assistantName.toLowerCase())) {
 
-        recognition.stop;
+        recognition.stop();
         isRecognizeRef.current=false;
         setListening(false);
         const data = await getGemeniResponse(transcript);

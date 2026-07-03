@@ -29,10 +29,12 @@ const UserContext = ({ children }) => {
 
 // make  A Funcation for Gemini Respinse 
 const getGemeniResponse=async(command)=>{
+     console.log("Calling Backend...");
     try {
         const result= await axios.post(`${serverUrl}/api/user/asktoassistant`,
             {command},
             {withCredentials:true})
+             console.log("Backend Response :", result.data);
         return result.data
     } catch (error) {
         console.log("full error : ",error)
@@ -65,3 +67,7 @@ const getGemeniResponse=async(command)=>{
 }
 
 export default UserContext
+
+
+
+
