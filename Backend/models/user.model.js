@@ -18,6 +18,11 @@ const userSchema = new mongoose.Schema(
         assistantName: {
             type: String
         },
+        assistantGender: {
+           type: String,
+           enum: ["male", "female"],
+           default: "male"
+        },
         assistantImage: {
             type: String
         },
@@ -30,7 +35,7 @@ const userSchema = new mongoose.Schema(
     },
     { timestamps: true })
 
-// create a user moder usig this schema
+// create a user model using this schema
 
 const User = mongoose.model("User", userSchema)
 export default User;
