@@ -25,7 +25,7 @@ export const getCurrentUser = async (req, res) => {
 
 export const updateAssistant =async(req, res)=>{
     try{
-        const {assistantName, imageUrl}=req.body; //this is for the preloaded image  to send in backend and save it in the database
+        const {assistantName,assistantGender, imageUrl}=req.body; //this is for the preloaded image  to send in backend and save it in the database
         let assistantImage;
 
         if(req.file){
@@ -38,6 +38,7 @@ export const updateAssistant =async(req, res)=>{
         //update the user in the database with the new assistant name and image
         const user=await User.findByIdAndUpdate(req.userId,{
             assistantName,
+            assistantGender,
             assistantImage
         },{ new: true }).select("-password")
         return res.status(200).json(user)
