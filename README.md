@@ -143,55 +143,6 @@ The assistant is powered by the **Google Gemini API**, enabling natural conversa
 
 ---
 
-# ⚙️ Project Workflow
-
-```text
-User Registration
-        │
-        ▼
-Secure Authentication
-(JWT + Refresh Token)
-        │
-        ▼
-Login
-        │
-        ▼
-Choose Avatar
-or Upload Custom Avatar
-        │
-        ▼
-Choose Assistant Name
-        │
-        ▼
-Choose Assistant Gender
-        │
-        ▼
-Save Assistant Profile
-        │
-        ▼
-Assistant Dashboard
-        │
-        ▼
-User Speaks Assistant Name
-        │
-        ▼
-Voice Recognition
-        │
-        ▼
-Gemini API
-        │
-        ▼
-Generate AI Response
-        │
-        ▼
-Speak Response
-        │
-        ▼
-Perform Browser Actions
-```
-
----
-
 # 📁 Project Structure
 
 ```
