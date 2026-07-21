@@ -8,7 +8,7 @@ export const userDataContext = createContext();
 const UserContext = ({ children }) => {
 
 
-    const serverUrl = "http://localhost:8000"
+    const serverUrl = "https://mitra-ai-virtual-assistant.onrender.com"
 
     const [userData, setUserData] = useState(null);
 
