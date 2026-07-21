@@ -1,13 +1,15 @@
 //take the iser id from "userId" , user find . return 
 
 import User from "../models/user.model.js"
-import uploadOnCloudinary from "../config/cloudinary.js";
+// import uploadonCloudinary from "../config/cloudinary.js";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import geminiResponse from "../gemeni.js";
 import { response } from "express";
 import moment from "moment";
+import { uploadonCloudinary } from "../config/cloudinary.js";
+
 
 export const getCurrentUser = async (req, res) => {
     try {
@@ -23,13 +25,18 @@ export const getCurrentUser = async (req, res) => {
     }
 }
 
+
+
 export const updateAssistant = async (req, res) => {
+    console.log("Body:", req.body);
+    console.log("File:", req.file);
+    console.log("UserId:", req.userId);
     try {
         const { assistantName, assistantGender, imageUrl } = req.body; //this is for the preloaded image  to send in backend and save it in the database
         let assistantImage;
 
         if (req.file) {
-            assistantImage = await uploadOnCloudinary(req.file.path);
+            assistantImage = await uploadonCloudinary(req.file.path);
         } else {
             assistantImage = imageUrl; //this is for the preloaded image  to send in backend and save it in the database
         }
@@ -43,7 +50,14 @@ export const updateAssistant = async (req, res) => {
         }, { new: true }).select("-password")
         return res.status(200).json(user)
     } catch (error) {
-        return res.status(400).json({ message: "update assistant error" })
+        // return res.status(400).json({ message: "update assistant error" })
+        console.error("Update Assistant Error:", error);
+
+        return res.status(400).json({
+        success: false,
+        message: error.message,
+        stack: error.stack
+    });
     }
 }
 
